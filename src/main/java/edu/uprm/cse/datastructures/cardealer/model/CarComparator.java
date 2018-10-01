@@ -5,11 +5,11 @@ import java.util.Iterator;
 
 
 
-public class CarComparator<T> implements Comparator<T>{
+public class CarComparator<T> implements Comparator<Object>{
 
 
 	@Override
-	public int compare(T o1, T o2) {
+	public int compare(Object o1, Object o2) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
