@@ -59,7 +59,7 @@ private class DNode<E> {
 		
 		DNode<E> temp = null;
 		for (temp = head; temp.getNext() != null; temp = temp.getNext());
-		DNode<E> newNode = new DNode();
+		DNode<E> newNode = new DNode<E>();
 		newNode.setElement(e);
 		newNode.setPrev(temp);
 		temp.setNext(newNode);

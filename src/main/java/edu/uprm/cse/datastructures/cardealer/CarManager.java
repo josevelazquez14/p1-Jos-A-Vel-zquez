@@ -116,7 +116,7 @@ public class CarManager {
       }            
 	 
       @GET
-      @Path("{id}")
+      @Path("/{id}")
       @Produces(MediaType.APPLICATION_JSON)
       public Car getCar(@PathParam("id") long id){
         for(Car car: carList){
@@ -138,7 +138,7 @@ public class CarManager {
     }       
 	
 	 @PUT
-	    @Path("{id}/update")
+	    @Path("/{id}/update")
 	    @Produces(MediaType.APPLICATION_JSON)
 	    public Response updateCar(Car newCar){
 	      
