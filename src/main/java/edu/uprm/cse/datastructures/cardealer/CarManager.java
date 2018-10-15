@@ -1,8 +1,18 @@
 package edu.uprm.cse.datastructures.cardealer;
 
+
 import java.util.concurrent.atomic.AtomicLong;
 
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import edu.uprm.cse.datastructures.cardealer.model.Car;
 import edu.uprm.cse.datastructures.cardealer.util.CircularSortedDoublyLinkedList;
@@ -15,7 +25,7 @@ public class CarManager {
 		  private final double carPrice;
 		  private static final AtomicLong counter = new AtomicLong(100);
 		
-	private final CircularSortedDoublyLinkedList<CarManagerBuilder> carList = MockCustumerList.getInstance();	
+	private final CircularSortedDoublyLinkedList<Car> carList = MockCustumerList.getInstance();	
 		
 	private CarManager(CarManagerBuilder builder){
 	    this.carID = builder.carID;
@@ -92,32 +102,68 @@ public class CarManager {
      
         
 	      
-	public void readAll(Car[] cars) {
-		
-	}
+      @GET
+      @Path("")
+      @Produces(MediaType.APPLICATION_JSON)
+      public Car[] getAllCar() {
+    	  Car[] arr = new Car[carList.size()];
+    	  int i = 0;
+    	  for(Car car: carList){
+    		  arr[i] = car;
+    		  i++;
+    	  }
+      return arr;
+      }            
 	 
-	public Object read(String carID) {
-		
-		return null;
-	}
+      @GET
+      @Path("{id}")
+      @Produces(MediaType.APPLICATION_JSON)
+      public Car getCar(@PathParam("id") long id){
+        for(Car car: carList){
+        	if(car.getCarId() == id){
+        		return car;
+        	}
+        } 
+        
+          throw new NotFoundException();
+        
+      }      
 	
-	public void add(CarManagerBuilder newCar) {
-		carList.add(newCar);
-		
-	}
+	@POST
+    @Path("/add")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addCar(Car newCar){
+      carList.add(newCar);
+      return Response.status(201).build();
+    }       
 	
-	public void update(Car car) {
-		for(int i = 0; i<carList.size(); i++) {
-//			if(car.getCarId() == getAllCars[i].getCarId()) {
-//				carList.remove(i);
-//				carList.add(car);
-				
-				
-			}
-		}
-	}
+	 @PUT
+	    @Path("{id}/update")
+	    @Produces(MediaType.APPLICATION_JSON)
+	    public Response updateCar(Car newCar){
+	      
+	      for(Car car: carList){
+	    	  if(car.getCarId() == newCar.getCarId()){
+	    		  carList.remove(car);
+	    		  carList.add(newCar);
+	    		  return Response.status(Response.Status.OK).build();
+	    	  } 
+	      } 
+	        return Response.status(Response.Status.NOT_FOUND).build();      
+	    }      
 	
-	public Object delete(String carID) {
-		return null;
-	}
+	 @DELETE
+	    @Path("/{id}/delete")
+	    public void deleteCar(@PathParam("id") long id){
+		 boolean removed = false;
+	      for (Car car: carList) {
+	    	  if(car.getCarId()== id){
+	    		  carList.remove(car);
+	    		 
+	    		  break;
+	    	  }
+	    	  if(!removed)
+	    		  throw new NotFoundException();
+	      }
+	    }      
 }

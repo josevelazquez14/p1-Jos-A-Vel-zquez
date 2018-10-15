@@ -6,38 +6,38 @@ import edu.uprm.cse.datastructures.cardealer.CarManager.CarManagerBuilder;
 import edu.uprm.cse.datastructures.cardealer.model.Car;
 import javassist.bytecode.analysis.ControlFlow.Node;
 
-public class CircularSortedDoublyLinkedList<CarManagerBuilder> implements SortedList<CarManagerBuilder>{
-private class DNode<CarManagerBuilder> {
-	private CarManagerBuilder value;
-	private DNode<CarManagerBuilder> next;
-	private DNode<CarManagerBuilder> prev;
+public class CircularSortedDoublyLinkedList<E> implements SortedList<E>{
+private class DNode<E> {
+	private E value;
+	private DNode<E> next;
+	private DNode<E> prev;
 	
-	public CarManagerBuilder getElement() {
+	public E getElement() {
 		return value;
 	}
-	public void setElement(CarManagerBuilder newCar) {
+	public void setElement(E newCar) {
 		this.value = newCar;
 	}
-	public DNode<CarManagerBuilder> getNext() {
+	public DNode<E> getNext() {
 		return next;
 	}
-	public void setNext(DNode<CarManagerBuilder> next) {
+	public void setNext(DNode<E> next) {
 		this.next = next;
 	}
-	public DNode<CarManagerBuilder> getPrev() {
+	public DNode<E> getPrev() {
 		return prev;
 	}
-	public void setPrev(DNode<CarManagerBuilder> prev) {
+	public void setPrev(DNode<E> prev) {
 		this.prev = prev;
 	}
 	
 }
 	private int currentSize;
-	private DNode<CarManagerBuilder> head, last = null;
+	private DNode<E> head, last = null;
 	
 	
 	@Override
-	public Iterator<CarManagerBuilder> iterator() {
+	public Iterator<E> iterator() {
 		// TODO Auto-generated method stub
 //		public boolean hasNext() {
 //		      return index < N;
@@ -51,16 +51,16 @@ private class DNode<CarManagerBuilder> {
 		return null;
 	}
 	
-	public boolean add(CarManagerBuilder carManagerBuilder) {
+	public boolean add(E e) {
 		// TODO Auto-generated method stub
-		if (carManagerBuilder == null){
+		if (e== null){
 			return false;
 		}
 		
-		DNode<CarManagerBuilder> temp = null;
+		DNode<E> temp = null;
 		for (temp = head; temp.getNext() != null; temp = temp.getNext());
-		DNode<CarManagerBuilder> newNode = new DNode();
-		newNode.setElement(carManagerBuilder);
+		DNode<E> newNode = new DNode();
+		newNode.setElement(e);
 		newNode.setPrev(temp);
 		temp.setNext(newNode);
 		this.currentSize++;
@@ -74,12 +74,12 @@ private class DNode<CarManagerBuilder> {
 	}
 
 	@Override
-	public boolean remove(CarManagerBuilder car) {
+	public boolean remove(E car) {
 		// TODO Auto-generated method stub
 		if (car == null){
 			throw new IllegalArgumentException("Parameter cannot be null.");
 		}
-		DNode<CarManagerBuilder> temp = null;
+		DNode<E> temp = null;
 		for (temp = head.getNext(); temp != null; temp = temp.getNext()){
 			if (temp.getElement().equals(car)){
 				// found first copy
@@ -104,7 +104,7 @@ private class DNode<CarManagerBuilder> {
 			throw new IndexOutOfBoundsException();
 		}
 		
-		DNode<CarManagerBuilder> temp = null;
+		DNode<E> temp = null;
 		int counter = 0;
 		for (temp = head.getNext(); counter < index; temp = temp.getNext(), counter++);
 		if (temp.getNext() != null){
@@ -120,7 +120,7 @@ private class DNode<CarManagerBuilder> {
 	}
 
 	@Override
-	public int removeAll(CarManagerBuilder car) {
+	public int removeAll(E car) {
 		// TODO Auto-generated method stub
 		int numCopies = 0;
 		while(this.remove(car)){
@@ -130,7 +130,7 @@ private class DNode<CarManagerBuilder> {
 	}
 
 	@Override
-	public CarManagerBuilder first() {
+	public E first() {
 		// TODO Auto-generated method stub
 		if(this.isEmpty())
 			return null;
@@ -139,7 +139,7 @@ private class DNode<CarManagerBuilder> {
 	}
 
 	@Override
-	public CarManagerBuilder last() {
+	public E last() {
 		// TODO Auto-generated method stub
 		if(this.isEmpty())
 			return null;
@@ -148,14 +148,14 @@ private class DNode<CarManagerBuilder> {
 	}
 
 	@Override
-	public CarManagerBuilder get(int index) {
+	public E get(int index) {
 		// TODO Auto-generated method stub
 		if ((index < 0) || (index >= this.size())){
 			throw new IndexOutOfBoundsException();
 		}
 		else {
 			int counter = 0;
-			DNode<CarManagerBuilder> temp = null;
+			DNode<E> temp = null;
 			for (temp = head.getNext(); counter < index; temp = temp.getNext(), counter++);
 			return temp.getElement();
 		}
@@ -170,7 +170,7 @@ private class DNode<CarManagerBuilder> {
 	}
 
 	@Override
-	public boolean contains(CarManagerBuilder car) {
+	public boolean contains(E car) {
 		// TODO Auto-generated method stub
 		return this.firstIndex(car) >= 0;
 	}
@@ -182,14 +182,14 @@ private class DNode<CarManagerBuilder> {
 	}
 
 	@Override
-	public int firstIndex(CarManagerBuilder car) {
+	public int firstIndex(E car) {
 		// TODO Auto-generated method stub
 		if (car == null){
 			throw new IllegalArgumentException("Parameter cannot be null.");
 		}
 		else {
 			int counter = 0;
-			DNode<CarManagerBuilder> temp = null;
+			DNode<E> temp = null;
 			for (temp = head.getNext(); temp != null; temp = temp.getNext(), counter++){
 				if (temp.getElement().equals(car)){
 					return counter;
@@ -200,14 +200,14 @@ private class DNode<CarManagerBuilder> {
 	}
 
 	@Override
-	public int lastIndex(CarManagerBuilder car) {
+	public int lastIndex(E car) {
 		// TODO Auto-generated method stub
 		if (car == null){
 			throw new IllegalArgumentException("Parameter cannot be null.");
 		}
 		else {
 			int counter =0, lastSeen = -1;
-			DNode<CarManagerBuilder> temp = null;
+			DNode<E> temp = null;
 			for (temp = head.getNext(); temp != null; temp = temp.getNext(), counter++){
 				if (temp.getElement().equals(car)){
 					lastSeen = counter;
