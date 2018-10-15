@@ -1,13 +1,13 @@
 package edu.uprm.cse.datastructures.cardealer.model;
 // Car class pojo
 public class Car {
-	private long carID;
+	private long carId;
 	private String carBrand;
 	private String carModel;
 	private String carModelOption;
 	private double carPrice;
 	public long getCarId() {
-		return carID;
+		return carId;
 	}
 	public String getCarBrand() {
 		return carBrand;
@@ -27,7 +27,7 @@ public class Car {
 	}
 	public Car(long carID, String carBrand, String carModel, String carModelOption, double carPrice) {
 		super();
-		this.carID = carID;
+		this.carId = carID;
 		this.carBrand = carBrand;
 		this.carModel = carModel;
 		this.carModelOption = carModelOption;
@@ -38,7 +38,7 @@ public class Car {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((carBrand == null) ? 0 : carBrand.hashCode());
-		result = prime * result + (int) (carID ^ (carID >>> 32));
+		result = prime * result + (int) (carId ^ (carId >>> 32));
 		result = prime * result + ((carModel == null) ? 0 : carModel.hashCode());
 		result = prime * result + ((carModelOption == null) ? 0 : carModelOption.hashCode());
 		long temp;
@@ -60,7 +60,7 @@ public class Car {
 				return false;
 		} else if (!carBrand.equals(other.carBrand))
 			return false;
-		if (carID != other.carID)
+		if (carId != other.carId)
 			return false;
 		if (carModel == null) {
 			if (other.carModel != null)
@@ -78,7 +78,7 @@ public class Car {
 	}
 	@Override
 	public String toString() {
-		return "Car [carID=" + carID + ", carBrand=" + carBrand + ", carModel=" + carModel + ", carModelOption="
+		return "Car [carID=" + carId + ", carBrand=" + carBrand + ", carModel=" + carModel + ", carModelOption="
 				+ carModelOption + ", carPrice=" + carPrice + "]";
 	}
 	
