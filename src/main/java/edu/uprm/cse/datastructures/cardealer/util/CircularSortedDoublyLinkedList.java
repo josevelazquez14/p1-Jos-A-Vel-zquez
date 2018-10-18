@@ -1,10 +1,14 @@
 package edu.uprm.cse.datastructures.cardealer.util;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
 
-
+import edu.uprm.cse.datastructures.cardealer.MockCustumerList;
 import edu.uprm.cse.datastructures.cardealer.model.Car;
-import javassist.bytecode.analysis.ControlFlow.Node;
+import edu.uprm.cse.datastructures.cardealer.model.CarComparator;
+
 
 public class CircularSortedDoublyLinkedList<E> implements SortedList<E>{
 private class DNode<E> {
@@ -32,38 +36,70 @@ private class DNode<E> {
 	}
 	
 }
-	private int currentSize;
-	private DNode<E> head, last = null;
+	private int currentSize;	
+	private	DNode<E> head;
 	
 	
+	public CircularSortedDoublyLinkedList() {
+		head = new DNode<E>();
+		this.head.setElement(null);
+		this.head.setNext(head);
+		this.head.setPrev(head);
+		currentSize =0;
+	}
+	
+	private final CircularSortedDoublyLinkedList<Car> carList = MockCustumerList.getInstance();	
+		
 	@Override
 	public Iterator<E> iterator() {
 		// TODO Auto-generated method stub
-//		public boolean hasNext() {
-//		      return index < N;
-//		    }
-//		    public E next() {
-//		        if (!hasNext()) throw new NoSuchElementException();
-//
-//		    }
-//		    public void remove() { throw new UnsupportedOperationException(); }
+		List<E> list = new ArrayList<E>();
 		
-		return null;
+		DNode<E> current = this.head.getNext();
+		
+		while(current != head) {
+			list.add(current.getElement());
+			current = current.getNext();
+		}
+		
+		return list.iterator();
 	}
 	
-	public boolean add(E e) {
+	public boolean add(E obj) {
 		// TODO Auto-generated method stub
-		if (e== null){
+		DNode<E> temp = new DNode<E>();
+		temp.setElement(obj);
+		
+		if(obj == null) {
 			return false;
 		}
 		
-		DNode<E> temp = null;
-		for (temp = head; temp.getNext() != null; temp = temp.getNext());
-		DNode<E> newNode = new DNode<E>();
-		newNode.setElement(e);
-		newNode.setPrev(temp);
-		temp.setNext(newNode);
-		this.currentSize++;
+		if(this.contains(obj))
+			return false;
+		
+
+	
+		CarComparator c = new CarComparator();
+		
+		DNode<E> cursor = head.getNext();
+		while(cursor != head) {
+			if(c.compare((Car) obj, (Car) cursor.getElement()) <=0) {
+				temp.setNext(cursor);
+				temp.setPrev(cursor.getPrev());
+				cursor.getPrev().setNext(temp);
+				cursor.setPrev(temp);
+				this.currentSize++;
+				return true;
+			}			
+			cursor = cursor.getNext();
+		}
+		
+		
+		temp.setNext(head);
+		temp.setPrev(this.head.getPrev());
+		this.head.setPrev(temp);
+		temp.getPrev().setNext(temp);
+		this.currentSize++;		
 		return true;
 	}
 
@@ -79,21 +115,26 @@ private class DNode<E> {
 		if (car == null){
 			throw new IllegalArgumentException("Parameter cannot be null.");
 		}
-		DNode<E> temp = null;
-		for (temp = head.getNext(); temp != null; temp = temp.getNext()){
-			if (temp.getElement().equals(car)){
-				// found first copy
-				if (temp.getNext() != null){
-					temp.getNext().setPrev(temp.getPrev());
+		DNode<E> temp = head.getNext();
+		
+		if(!this.contains(car))
+			return false;
+		
+			while (temp != head){
+				if (temp.getElement().equals(car)){
+					// found first copy
+					if (temp.getNext() != null){
+						temp.getNext().setPrev(temp.getPrev());
+					}
+					temp.getPrev().setNext(temp.getNext());
+					temp.setElement(null);
+					temp.setNext(null);
+					temp.setPrev(null);
+					this.currentSize--;
+					return true;
 				}
-				temp.getPrev().setNext(temp.getNext());
-				temp.setElement(null);
-				temp.setNext(null);
-				temp.setPrev(null);
-				this.currentSize--;
-				return true;
 			}
-		}
+		
 		return false;
 	}
 
@@ -103,6 +144,7 @@ private class DNode<E> {
 		if ((index < 0) || (index >= this.size())){
 			throw new IndexOutOfBoundsException();
 		}
+		
 		
 		DNode<E> temp = null;
 		int counter = 0;
@@ -138,14 +180,6 @@ private class DNode<E> {
 		return head.getElement();
 	}
 
-	@Override
-	public E last() {
-		// TODO Auto-generated method stub
-		if(this.isEmpty())
-			return null;
-		
-		return last.getElement();
-	}
 
 	@Override
 	public E get(int index) {
@@ -189,11 +223,12 @@ private class DNode<E> {
 		}
 		else {
 			int counter = 0;
-			DNode<E> temp = null;
-			for (temp = head.getNext(); temp != null; temp = temp.getNext(), counter++){
-				if (temp.getElement().equals(car)){
+			DNode<E> temp = head.getNext();
+			while(temp != head) {
+				if(temp.getElement().equals(car))
 					return counter;
-				}
+				temp = temp.getNext();
+				counter++;
 			}
 			return -1;
 		}
@@ -207,15 +242,23 @@ private class DNode<E> {
 		}
 		else {
 			int counter =0, lastSeen = -1;
-			DNode<E> temp = null;
-			for (temp = head.getNext(); temp != null; temp = temp.getNext(), counter++){
-				if (temp.getElement().equals(car)){
+			DNode<E> temp = head.getNext();
+			while(temp.getNext() != head){
+				if (temp.equals(car)){
 					lastSeen = counter;
 				}
 			}
 			return lastSeen;
 		}
 	}
+
+	@Override
+	public E last() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 
 	
 }

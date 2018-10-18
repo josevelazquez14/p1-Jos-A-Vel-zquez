@@ -1,6 +1,7 @@
 package testers;
 
 import edu.uprm.cse.datastructures.cardealer.model.Car;
+import edu.uprm.cse.datastructures.cardealer.model.CarComparator;
 import edu.uprm.cse.datastructures.cardealer.util.CircularSortedDoublyLinkedList;
 import edu.uprm.cse.datastructures.cardealer.util.SortedList;
 
@@ -81,8 +82,9 @@ public class ListTester {
 
 	private static void printList(SortedList<?> list) {
 		for (Object object : list) {
-			System.out.println(object);
+				System.out.println(object);
 		}
+		
 	}
 
 }

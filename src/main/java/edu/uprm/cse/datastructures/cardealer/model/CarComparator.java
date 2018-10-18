@@ -8,8 +8,8 @@ import java.util.Iterator;
 
 public class CarComparator implements Comparator<Car> {
 
+	
 
-	@Override
 	public int compare(Car car1, Car car2) {
 		// TODO Auto-generated method stub	
 		String car1Info = car1.getCarBrand() + car1.getCarModel() + car1.getCarModelOption();
