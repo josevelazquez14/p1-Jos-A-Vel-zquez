@@ -140,7 +140,7 @@ public class CarManager {
 	 @PUT
 	    @Path("/{id}/update")
 	    @Produces(MediaType.APPLICATION_JSON)
-	    public Response updateCar(Car newCar){
+	    public Response updateCar(@PathParam("id" long id, Car car)){
 	      
 	      for(Car car: carList){
 	    	  if(car.getCarId() == newCar.getCarId()){

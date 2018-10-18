@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
 import edu.uprm.cse.datastructures.cardealer.MockCustumerList;
 import edu.uprm.cse.datastructures.cardealer.model.Car;
 import edu.uprm.cse.datastructures.cardealer.model.CarComparator;
+import edu.uprm.cse.datastructures.cardealer.util.SortedList;
 
 
 public class CircularSortedDoublyLinkedList<E> implements SortedList<E>{
@@ -189,7 +190,7 @@ private class DNode<E> {
 		}
 		else {
 			int counter = 0;
-			DNode<E> temp = null;
+			DNode<E> temp = head.getNext() ;
 			for (temp = head.getNext(); counter < index; temp = temp.getNext(), counter++);
 			return temp.getElement();
 		}
