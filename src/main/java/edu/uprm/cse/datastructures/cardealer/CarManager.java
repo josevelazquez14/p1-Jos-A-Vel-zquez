@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import edu.uprm.cse.datastructures.cardealer.model.Car;
+import edu.uprm.cse.datastructures.cardealer.model.CarComparator;
 import edu.uprm.cse.datastructures.cardealer.util.CircularSortedDoublyLinkedList;
 	@Path("/cars")
 public class CarManager {
@@ -25,7 +26,7 @@ public class CarManager {
 //		  private final double carPrice;
 //		  private static final AtomicLong counter = new AtomicLong(100);
 		
-	private final CircularSortedDoublyLinkedList<Car> carList = MockCustumerList.getInstance();	
+	private final CircularSortedDoublyLinkedList<Car> carList = new CircularSortedDoublyLinkedList<Car>(new CarComparator());	
 		
 //	private CarManager(CarManagerBuilder builder){
 //	    this.carID = builder.carID;
@@ -140,12 +141,12 @@ public class CarManager {
 	 @PUT
 	    @Path("/{id}/update")
 	    @Produces(MediaType.APPLICATION_JSON)
-	    public Response updateCar(@PathParam("id" long id, Car car)){
+	    public Response updateCar(Car newcar){
 	      
 	      for(Car car: carList){
-	    	  if(car.getCarId() == newCar.getCarId()){
+	    	  if(car.getCarId() == newcar.getCarId()){
 	    		  carList.remove(car);
-	    		  carList.add(newCar);
+	    		  carList.add(newcar);
 	    		  return Response.status(Response.Status.OK).build();
 	    	  } 
 	      } 

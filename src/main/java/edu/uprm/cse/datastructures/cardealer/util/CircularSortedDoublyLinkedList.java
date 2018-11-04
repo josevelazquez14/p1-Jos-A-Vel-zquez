@@ -1,6 +1,7 @@
 package edu.uprm.cse.datastructures.cardealer.util;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -39,14 +40,16 @@ private class DNode<E> {
 }
 	private int currentSize;	
 	private	DNode<E> head;
+	private Comparator<E> c;
 	
 	
-	public CircularSortedDoublyLinkedList() {
+	public CircularSortedDoublyLinkedList(Comparator<E> comp) {
 		head = new DNode<E>();
 		this.head.setElement(null);
 		this.head.setNext(head);
 		this.head.setPrev(head);
 		currentSize =0;
+		c = comp;
 	}
 	
 	private final CircularSortedDoublyLinkedList<Car> carList = MockCustumerList.getInstance();	
@@ -80,17 +83,18 @@ private class DNode<E> {
 		
 
 	
-		CarComparator c = new CarComparator();
+		
 		
 		DNode<E> cursor = head.getNext();
 		while(cursor != head) {
-			if(c.compare((Car) obj, (Car) cursor.getElement()) <=0) {
+			if(c.compare(obj, cursor.getElement()) <=0) {
 				temp.setNext(cursor);
 				temp.setPrev(cursor.getPrev());
 				cursor.getPrev().setNext(temp);
 				cursor.setPrev(temp);
 				this.currentSize++;
 				return true;
+			
 			}			
 			cursor = cursor.getNext();
 		}

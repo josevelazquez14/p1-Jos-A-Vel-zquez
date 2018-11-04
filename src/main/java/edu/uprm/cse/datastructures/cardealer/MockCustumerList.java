@@ -6,10 +6,11 @@ import java.util.stream.Collectors;
 
 
 import edu.uprm.cse.datastructures.cardealer.model.Car;
+import edu.uprm.cse.datastructures.cardealer.model.CarComparator;
 import edu.uprm.cse.datastructures.cardealer.util.CircularSortedDoublyLinkedList;
 
 public class MockCustumerList {
-  private static final CircularSortedDoublyLinkedList<Car> carList = new CircularSortedDoublyLinkedList<>();
+  private static final CircularSortedDoublyLinkedList<Car> carList = new CircularSortedDoublyLinkedList<Car>(new CarComparator());
 
     
 

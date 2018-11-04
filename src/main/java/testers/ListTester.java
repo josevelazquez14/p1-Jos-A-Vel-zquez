@@ -1,5 +1,7 @@
 package testers;
 
+import java.util.Comparator;
+
 import edu.uprm.cse.datastructures.cardealer.model.Car;
 import edu.uprm.cse.datastructures.cardealer.model.CarComparator;
 import edu.uprm.cse.datastructures.cardealer.util.CircularSortedDoublyLinkedList;
@@ -8,16 +10,16 @@ import edu.uprm.cse.datastructures.cardealer.util.SortedList;
 public class ListTester {
 
 	public static void main(String[] args) {
-		SortedList<Integer> list = new CircularSortedDoublyLinkedList<Integer>();
+		//SortedList<Integer> list = new CircularSortedDoublyLinkedList<Integer>(new Comparator);
 		
-		System.out.println("true : " + list.isEmpty());
+		//System.out.println("true : " + list.isEmpty());
 		
-		SortedList<Car> cars = new CircularSortedDoublyLinkedList<Car>();
+		SortedList<Car> cars = new CircularSortedDoublyLinkedList<Car>(new CarComparator());
 		
-		cars.add(new Car(1, "Toyota", "Rav4", "LE", 1));
-		cars.add(new Car(2, "Toyota", "Rav4", "SE", 1));
-		cars.add(new Car(3, "Honda", "Civic", "DX", 1));
-		cars.add(new Car(4, "Honda", "Accord", "LX", 1));
+		cars.add(new Car(1, "Toyota", "Rav4", "LE", 1, 0));
+		cars.add(new Car(2, "Toyota", "Rav4", "SE", 1, 0));
+		cars.add(new Car(3, "Honda", "Civic", "DX", 1, 0));
+		cars.add(new Car(4, "Honda", "Accord", "LX", 1, 0));
 		
 		printList(cars);
 		
@@ -25,15 +27,15 @@ public class ListTester {
 //		cars = new CircularSortedDoublyLinkedList<Car>(new CarComparator());
 //		((CircularSortedDoublyLinkedList<Car>)cars).setComparator((Comparator<Car>) new CarComparator());
 		System.out.println("");
-		Car civic = new Car(3, "Honda", "Civic", "DX", 1);
-		cars.add(new Car(1, "Toyota", "Rav4", "LE", 1));
-		cars.add(new Car(2, "Toyota", "Rav4", "SE", 1));
+		Car civic = new Car(3, "Honda", "Civic", "DX", 1, 0);
+		cars.add(new Car(1, "Toyota", "Rav4", "LE", 1, 0));
+		cars.add(new Car(2, "Toyota", "Rav4", "SE", 1, 0));
 		cars.add(civic);
-		cars.add(new Car(4, "Honda", "Accord", "LX", 1));
+		cars.add(new Car(4, "Honda", "Accord", "LX", 1, 0));
 		
 		printList(cars);
 		
-		Car car = new Car(5, "Nissan", "350z", "Track", 1);
+		Car car = new Car(5, "Nissan", "350z", "Track", 1, 0);
 		cars.add(car);
 		System.out.println("\n added one more car");
 		printList(cars);

@@ -6,6 +6,8 @@ public class Car {
 	private String carModel;
 	private String carModelOption;
 	private double carPrice;
+	private double carYear;
+	
 	public long getCarId() {
 		return carId;
 	}
@@ -21,17 +23,21 @@ public class Car {
 	public double getCarPrice() {
 		return carPrice;
 	}
+	public double getCarYear() {
+		return carYear;
+	}
 	
 	public Car() {
 		
 	}
-	public Car(long carID, String carBrand, String carModel, String carModelOption, double carPrice) {
+	public Car(long carID, String carBrand, String carModel, String carModelOption, double carPrice, double carYear) {
 		super();
 		this.carId = carID;
 		this.carBrand = carBrand;
 		this.carModel = carModel;
 		this.carModelOption = carModelOption;
 		this.carPrice = carPrice;
+		this.carYear = carYear;
 	}
 	@Override
 	public int hashCode() {
@@ -44,6 +50,8 @@ public class Car {
 		long temp;
 		temp = Double.doubleToLongBits(carPrice);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(carYear);
+		result = prime * result + (int) (temp^ (temp >>> 32));
 		return result;
 	}
 	@Override
@@ -79,7 +87,9 @@ public class Car {
 	@Override
 	public String toString() {
 		return "Car [carID=" + carId + ", carBrand=" + carBrand + ", carModel=" + carModel + ", carModelOption="
-				+ carModelOption + ", carPrice=" + carPrice + "]";
+				+ carModelOption + ", carPrice=" + carPrice + ",carYear=" + carYear + "]";
 	}
+	
+	
 	
 }
