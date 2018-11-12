@@ -1,5 +1,7 @@
 package edu.uprm.cse.datastructures.cardealer;
 
+import java.util.ArrayList;
+
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
@@ -11,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import edu.uprm.cse.datastructures.cardealer.model.Car;
 import edu.uprm.cse.datastructures.cardealer.model.Person;
 import edu.uprm.cse.datastructures.cardealer.model.PersonComparator;
 import edu.uprm.cse.datastructures.cardealer.util.CircularSortedDoublyLinkedList;
@@ -36,6 +39,24 @@ public class PersonManager {
     }            
 	 
     @GET
+    @Path("/{lastname}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<Person> getPersonByLastName(@PathParam("lastname") String lastName){
+    	ArrayList<Person> personArr =new ArrayList<Person>();
+
+
+  	  for(int i =0; i<personList.size(); i++) {
+  		  for(Person person: personList){
+  			  if(person.getLastName() == lastName){
+  				  personArr.add(person);
+  			  }
+  		  } 
+  	  }
+      
+  	  return personArr;       
+    }  
+    
+    @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Person getPerson(@PathParam("id") long id){
@@ -47,7 +68,7 @@ public class PersonManager {
       
         throw new NotFoundException();
       
-    }      
+    }   
 	
 	@POST
   @Path("/add")

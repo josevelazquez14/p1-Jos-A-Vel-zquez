@@ -81,10 +81,6 @@ private class DNode<E> {
 		if(this.contains(obj))
 			return false;
 		
-
-	
-		
-		
 		DNode<E> cursor = head.getNext();
 		while(cursor != head) {
 			if(c.compare(obj, cursor.getElement()) <=0) {

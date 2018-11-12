@@ -1,6 +1,7 @@
 package edu.uprm.cse.datastructures.cardealer;
 
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.ws.rs.DELETE;
@@ -128,7 +129,43 @@ public class CarManager {
         
           throw new NotFoundException();
         
-      }      
+      }   
+      
+      @GET
+      @Path("/{brand}")
+      @Produces(MediaType.APPLICATION_JSON)
+      public ArrayList<Car> searchCarBrand(@PathParam("brand") String brand){
+    	  ArrayList<Car> carArr =new ArrayList<Car>();
+
+    	  for(int i =0; i<carList.size(); i++) {
+    		  for(Car car: carList){
+    			  if(car.getCarBrand() == brand){
+    				  carArr.add(car);
+    			  }
+    		  } 
+    	  }
+        
+    	  return carArr;        
+      }   
+      
+      @GET
+      @Path("/{year}")
+      @Produces(MediaType.APPLICATION_JSON)
+      public ArrayList<Car> searchCarYear(@PathParam("year") double year){
+    	  ArrayList<Car> carArr =new ArrayList<Car>();
+
+    	  for(int i =0; i<carList.size(); i++) {
+    		  for(Car car: carList){
+    			  if(car.getCarYear() == year){
+    				  carArr.add(car);
+    			  }
+    		  } 
+    	  }
+        
+    	  return carArr;        
+      }   
+      
+      
 	
 	@POST
     @Path("/add")
