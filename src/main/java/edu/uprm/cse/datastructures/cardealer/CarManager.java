@@ -2,8 +2,6 @@ package edu.uprm.cse.datastructures.cardealer;
 
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicLong;
-
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
@@ -27,7 +25,8 @@ public class CarManager {
 //		  private final double carPrice;
 //		  private static final AtomicLong counter = new AtomicLong(100);
 		
-	private final CircularSortedDoublyLinkedList<Car> carList = new CircularSortedDoublyLinkedList<Car>(new CarComparator());	
+	private final CircularSortedDoublyLinkedList<Car> carList = 
+			new CircularSortedDoublyLinkedList<Car>(new CarComparator());	
 		
 //	private CarManager(CarManagerBuilder builder){
 //	    this.carID = builder.carID;
@@ -105,7 +104,7 @@ public class CarManager {
         
 	      
       @GET
-      @Path("")
+//      @Path("")
       @Produces(MediaType.APPLICATION_JSON)
       public Car[] getAllCar() {
     	  Car[] arr = new Car[carList.size()];

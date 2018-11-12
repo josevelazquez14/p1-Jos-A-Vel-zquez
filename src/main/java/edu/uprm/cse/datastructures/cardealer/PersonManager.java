@@ -26,7 +26,7 @@ public class PersonManager {
 	private final CircularSortedDoublyLinkedList<Person> personList = new CircularSortedDoublyLinkedList<Person>(new PersonComparator());
 	
 	@GET
-    @Path("")
+//    @Path("")
     @Produces(MediaType.APPLICATION_JSON)
     public Person[] getAllPersons() {
   	  Person[] arr = new Person[personList.size()];
