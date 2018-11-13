@@ -10,6 +10,8 @@ public class carUnit {
 	private long personId; // id of the person who purchased the car. (null until 
 	//purchased)	
 	
+	public carUnit() {}
+	
 	public long getCarUnitId() {
 		return carUnitId;
 	}

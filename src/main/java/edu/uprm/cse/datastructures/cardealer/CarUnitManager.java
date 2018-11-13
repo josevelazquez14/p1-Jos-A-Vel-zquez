@@ -20,7 +20,7 @@ import edu.uprm.cse.datastructures.cardealer.util.CircularSortedDoublyLinkedList
 
 public class CarUnitManager {
 
-	private final CircularSortedDoublyLinkedList<carUnit> carUnitList = new CircularSortedDoublyLinkedList<carUnit>(new CarUnitComparator());
+	private static CircularSortedDoublyLinkedList<carUnit> carUnitList = new CircularSortedDoublyLinkedList<carUnit>(new CarUnitComparator());
 	
 	 @GET
      @Path("")

@@ -27,7 +27,7 @@ public class CarManager {
 //		  private final double carPrice;
 //		  private static final AtomicLong counter = new AtomicLong(100);
 		
-	private final CircularSortedDoublyLinkedList<Car> carList = new CircularSortedDoublyLinkedList<Car>(new CarComparator());	
+	private static CircularSortedDoublyLinkedList<Car> carList = new CircularSortedDoublyLinkedList<Car>(new CarComparator());	
 		
 //	private CarManager(CarManagerBuilder builder){
 //	    this.carID = builder.carID;
@@ -132,14 +132,14 @@ public class CarManager {
       }   
       
       @GET
-      @Path("/{brand}")
+      @Path("brand/{brand}")
       @Produces(MediaType.APPLICATION_JSON)
       public ArrayList<Car> searchCarBrand(@PathParam("brand") String brand){
     	  ArrayList<Car> carArr =new ArrayList<Car>();
 
     	  for(int i =0; i<carList.size(); i++) {
     		  for(Car car: carList){
-    			  if(car.getCarBrand() == brand){
+    			  if(car.getCarBrand().toLowerCase().equals(brand.toLowerCase())){
     				  carArr.add(car);
     			  }
     		  } 
@@ -149,7 +149,7 @@ public class CarManager {
       }   
       
       @GET
-      @Path("/{year}")
+      @Path("year/{year}")
       @Produces(MediaType.APPLICATION_JSON)
       public ArrayList<Car> searchCarYear(@PathParam("year") double year){
     	  ArrayList<Car> carArr =new ArrayList<Car>();
@@ -171,7 +171,13 @@ public class CarManager {
     @Path("/add")
     @Produces(MediaType.APPLICATION_JSON)
     public Response addCar(Car newCar){
-      carList.add(newCar);
+		for(int i = 0; i< carList.size(); i++){
+			if(carList.get(i).getCarId() == newCar.getCarId()){
+				return Response.status(Response.Status.FORBIDDEN).build();
+			}
+				
+		}
+		carList.add(newCar);
       return Response.status(201).build();
     }       
 	

@@ -23,7 +23,7 @@ import edu.uprm.cse.datastructures.cardealer.util.CircularSortedDoublyLinkedList
 public class PersonManager {
 	
 	
-	private final CircularSortedDoublyLinkedList<Person> personList = new CircularSortedDoublyLinkedList<Person>(new PersonComparator());
+	private static CircularSortedDoublyLinkedList<Person> personList = new CircularSortedDoublyLinkedList<Person>(new PersonComparator());
 	
 	@GET
     @Path("")
@@ -39,7 +39,7 @@ public class PersonManager {
     }            
 	 
     @GET
-    @Path("/{lastname}")
+    @Path("lastname/{lastname}")
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayList<Person> getPersonByLastName(@PathParam("lastname") String lastName){
     	ArrayList<Person> personArr =new ArrayList<Person>();
@@ -47,7 +47,7 @@ public class PersonManager {
 
   	  for(int i =0; i<personList.size(); i++) {
   		  for(Person person: personList){
-  			  if(person.getLastName() == lastName){
+  			  if(person.getLastName().toLowerCase().equals(lastName.toLowerCase())){
   				  personArr.add(person);
   			  }
   		  } 
@@ -74,7 +74,14 @@ public class PersonManager {
   @Path("/add")
   @Produces(MediaType.APPLICATION_JSON)
   public Response addPerson(Person newPerson){
-    personList.add(newPerson);
+		for(int i = 0; i< personList.size(); i++){
+			if(personList.get(i).getPersonId() == newPerson.getPersonId()){
+				return Response.status(Response.Status.FORBIDDEN).build();
+			}
+				
+		}
+		
+		personList.add(newPerson);
     return Response.status(201).build();
   }       
 	

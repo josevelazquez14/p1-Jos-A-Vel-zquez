@@ -25,16 +25,21 @@ public class AppointmentManager {
 			new AppointmentPositionalList[list_size];
 	private boolean initialized = false;
 	
+	static AppointmentPositionalList<Appointment> mL = new AppointmentPositionalList<>(); //monday
+	static AppointmentPositionalList<Appointment> tL = new AppointmentPositionalList<>();  //tusday
+	static AppointmentPositionalList<Appointment> wL = new AppointmentPositionalList<>();  //wednesday
+	static AppointmentPositionalList<Appointment> thL = new AppointmentPositionalList<>();  //thursday
+	static AppointmentPositionalList<Appointment> fL = new AppointmentPositionalList<>(); //friday
+	
+	
 	public AppointmentManager() {
-		if(!initialized) {
-			appointmentList[0] = new AppointmentPositionalList<Appointment>(); //monday
-			appointmentList[1] = new AppointmentPositionalList<Appointment>(); //tusday
-			appointmentList[2] = new AppointmentPositionalList<Appointment>(); //wednesday
-			appointmentList[3] = new AppointmentPositionalList<Appointment>(); //thursday
-			appointmentList[4] = new AppointmentPositionalList<Appointment>(); //friday
-			
-			initialized = true;
-		}
+		appointmentList[0] = mL;
+		appointmentList[1] = tL;
+		appointmentList[2] = wL;
+		appointmentList[3] = thL;
+		appointmentList[4] = fL;
+		
+		
 	}
 	
 	
@@ -46,7 +51,7 @@ public class AppointmentManager {
     public Appointment[] getAllAppointment() {
   	  Appointment[] arr = new Appointment[appointmentList.length];
   	  int i = 0;
-  	  for(int j=0; i<list_size; j++) {
+  	  for(int j=0; j<list_size; j++) {
   		  for(Appointment appointment: appointmentList[j]){
   			  arr[i] = appointment;
   			  i++;
@@ -73,7 +78,7 @@ public class AppointmentManager {
     }    
     
     @GET
-    @Path("/{day}")
+    @Path("day/{day}")
     @Produces(MediaType.APPLICATION_JSON)
     public AppointmentPositionalList<Appointment> getAppointmentByDay(@PathParam("day") String day){
     	int pos = -1;
