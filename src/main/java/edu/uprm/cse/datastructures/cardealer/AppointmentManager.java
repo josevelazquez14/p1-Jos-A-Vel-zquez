@@ -90,16 +90,29 @@ public class AppointmentManager {
       
     }      
 	
-	@POST
+    @POST
   @Path("/add/{day}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response addAppointment(Appointment newAppointment, @PathParam("day") int day) {
-    
-    if(day<0)
+		for(int i=0; i<list_size; i++) {
+			 for(Appointment app: appointmentList[i]){
+				 if(app.getAppointmentId() == newAppointment.getAppointmentId()){
+					 return Response.status(Response.Status.BAD_REQUEST).build();
+				 }
+			 }
+		}
+		
+		
+    if(day<0 || day>4)
     	throw new IndexOutOfBoundsException();
-   
-    	appointmentList[day].addLast(newAppointment);
-    	return Response.status(201).build();
+    
+   try {
+	   appointmentList[day].addLast(newAppointment);
+   } catch (Exception e) {
+	   return Response.status(Response.Status.BAD_REQUEST).build();
+   }
+    	
+    	return Response.status(Response.Status.CREATED).build();
     
   }       
 	
