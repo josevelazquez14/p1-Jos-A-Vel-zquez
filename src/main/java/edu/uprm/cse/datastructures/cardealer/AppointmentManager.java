@@ -16,159 +16,127 @@ import edu.uprm.cse.datastructures.cardealer.util.AppointmentPositionalList;
 import edu.uprm.cse.datastructures.cardealer.util.Position;
 
 
-@Path("/appointment")
+@Path("/appoitment")
 
 public class AppointmentManager {
 
 	private final static int list_size = 5;
 	private static AppointmentPositionalList<Appointment>[] appointmentList = 
 			new AppointmentPositionalList[list_size];
-	private boolean initialized = false;
-
+	
+	
+	static AppointmentPositionalList<Appointment> mL = new AppointmentPositionalList<>(); //monday
+	static AppointmentPositionalList<Appointment> tL = new AppointmentPositionalList<>();  //tusday
+	static AppointmentPositionalList<Appointment> wL = new AppointmentPositionalList<>();  //wednesday
+	static AppointmentPositionalList<Appointment> thL = new AppointmentPositionalList<>();  //thursday
+	static AppointmentPositionalList<Appointment> fL = new AppointmentPositionalList<>(); //friday
+	
+	
 	public AppointmentManager() {
-		if(!initialized) {
-			appointmentList[0] = new AppointmentPositionalList<Appointment>(); //monday
-			appointmentList[1] = new AppointmentPositionalList<Appointment>(); //tusday
-			appointmentList[2] = new AppointmentPositionalList<Appointment>(); //wednesday
-			appointmentList[3] = new AppointmentPositionalList<Appointment>(); //thursday
-			appointmentList[4] = new AppointmentPositionalList<Appointment>(); //friday
-
-			initialized = true;
-		}
+		appointmentList[0] = mL;
+		appointmentList[1] = tL;
+		appointmentList[2] = wL;
+		appointmentList[3] = thL;
+		appointmentList[4] = fL;
+		
+		
 	}
-
-
-
-
+	
+	
+	
+	
 	@GET
-//	@Path("")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Appointment[] getAllAppointment() {
-		Appointment[] arr = new Appointment[appointmentList.length];
-		int i = 0;
-		for(int j=0; j<list_size; j++) {
-			for(Appointment appointment: appointmentList[j]){
-				arr[i] = appointment;
-				i++;
-			}
-
-		}
-		return arr;
-	}            
-
-	@GET
-	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Appointment getAppointment(@PathParam("id") long id){
-		for(int i=0; i<list_size; i++) {
-			for(Appointment appointment: appointmentList[i]){
-				if(appointment.getAppointmentId() == id){
-					return appointment;
-				}
-			} 
-		}
-
-		throw new NotFoundException();
-
-	}    
-
-	@GET
-	@Path("/{day}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public AppointmentPositionalList<Appointment> searchAppointmentByDay(@PathParam("day") String day){
-		int pos = -1;
-		switch(day) {
-		case "Monday":
-			pos = 0;
-			break;
-		case "Tusday":
-			pos =1;
-			break;
-		case "Wednesday":
-			pos =2;
-			break;
-		case "Thurday":
-			pos =3;
-			break;
-		case "Friday":
-			pos =4;
-			break;	
-		}
-
-		if(pos<0)
-			throw new NotFoundException();
-		else {
-			return appointmentList[pos];
-		}
-
-	}      
-
+    @Path("")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Appointment[] getAllAppointment() {
+  	  Appointment[] arr = new Appointment[appointmentList.length];
+  	  int i = 0;
+  	  for(int j=0; j<list_size; j++) {
+  		  for(Appointment appointment: appointmentList[j]){
+  			  arr[i] = appointment;
+  			  i++;
+  		  }
+  
+  	  }
+    return arr;
+    }            
+	 
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Appointment getAppointment(@PathParam("id") long id){
+	    for(int i=0; i<list_size; i++) {
+	    	for(Appointment appointment: appointmentList[i]){
+		      	if(appointment.getAppointmentId() == id){
+		      		return appointment;
+		      	}
+		      } 
+	    }
+      
+        throw new NotFoundException();
+      
+    }    
+    
+    @GET
+    @Path("day/{day}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public AppointmentPositionalList<Appointment> getAppointmentByDay(@PathParam("day") int day){
+    	      
+    	if(day<0)
+    		throw new IndexOutOfBoundsException();
+    	else {
+    		return appointmentList[day];
+    	}
+      
+    }      
+	
 	@POST
-	@Path("/add/{day}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response addAppointment(Appointment newAppointment, @PathParam("day") String day) {
-		int pos = -1;
-		switch(day) {
-		case "Monday":
-			pos = 0;
-			break;
-		case "Tusday":
-			pos =1;
-			break;
-		case "Wednesday":
-			pos =2;
-			break;
-		case "Thurday":
-			pos =3;
-			break;
-		case "Friday":
-			pos =4;
-			break;	
-		}
-
-		if(pos<0)
-			throw new IndexOutOfBoundsException();
-		else 
-			appointmentList[pos].addLast(newAppointment);
-
-
-		return Response.status(201).build();
-	}       
-
-	@PUT
-	@Path("/{id}/update")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateAppointment(Appointment newAppointment){
-
-		for(int i=0; i<list_size; i++) {
-			for(Position<Appointment> pos: appointmentList[i].positions()){
-				if(pos.getElement().getAppointmentId() == newAppointment.getAppointmentId()){
-					Position<Appointment> newPos = appointmentList[i].addAfter(pos, newAppointment);
-
-					appointmentList[i].remove(appointmentList[i].before(newPos));
-
-					return Response.status(Response.Status.OK).build();
-				} 
-			}
-		}
-		return Response.status(Response.Status.NOT_FOUND).build();      
-	}      
-
-	@DELETE
-	@Path("/{id}/delete")
-	public void deleteAppointment(@PathParam("id") long id){
-		boolean removed = false;
-		for(int i=0; i<list_size; i++) {
-			for(Position<Appointment> pos: appointmentList[i].positions()){
-				if(pos.getElement().getAppointmentId() == id){
-					appointmentList[i].remove(pos);
-					removed = true;
-					break;
-				}
-				if(!removed)
-					throw new NotFoundException();
-			}
-		}
-	}      
-
+  @Path("/add/{day}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response addAppointment(Appointment newAppointment, @PathParam("day") int day) {
+    
+    if(day<0)
+    	throw new IndexOutOfBoundsException();
+   
+    	appointmentList[day].addLast(newAppointment);
+    	return Response.status(201).build();
+    
+  }       
+	
+	 @PUT
+	    @Path("/{id}/update")
+	    @Produces(MediaType.APPLICATION_JSON)
+	    public Response updateAppointment(Appointment newAppointment){
+	      
+		 for(int i=0; i<list_size; i++) {
+			 for(Position<Appointment> pos: appointmentList[i].positions()){
+				 if(pos.getElement().getAppointmentId() == newAppointment.getAppointmentId()){
+					 Position<Appointment> newPos = appointmentList[i].addAfter(pos, newAppointment);
+					 
+					 appointmentList[i].remove(appointmentList[i].before(newPos));
+										 
+					 return Response.status(Response.Status.OK).build();
+				 } 
+			 }
+		 }
+			 return Response.status(Response.Status.NOT_FOUND).build();      
+	    }      
+	
+	 @DELETE
+	    @Path("/{id}/delete")
+	    public void deleteAppointment(@PathParam("id") long id){
+		 boolean removed = false;
+		 for(int i=0; i<list_size; i++) {
+			 for(Position<Appointment> pos: appointmentList[i].positions()){
+				 if(pos.getElement().getAppointmentId() == id){
+					 appointmentList[i].remove(pos);
+					 removed = true;
+					 break;
+				 }
+				 if(!removed)
+					 throw new NotFoundException();
+			 }
+		 }
+	    }      
+	
 }

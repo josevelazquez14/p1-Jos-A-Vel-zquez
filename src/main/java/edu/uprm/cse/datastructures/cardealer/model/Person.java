@@ -8,6 +8,8 @@ public class Person {
 	private Character gender; // gender
 	private String phone; // phone number
 	
+	public Person() {}
+	
 	
 	public long getPersonId() {
 		return personId;

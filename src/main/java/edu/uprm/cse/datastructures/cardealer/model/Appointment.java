@@ -6,6 +6,8 @@ public class Appointment {
 	private String job; // description of the job to be done (i.e.: “oil change”)
 	private double bill; // cost of the service (initially 0).
 	
+	public Appointment() {}
+	
 	public long getAppointmentId() {
 		return appointmentId;
 	}
